@@ -64,22 +64,18 @@ func main() {
 
 	fields:= []Field{
 		{
-			Title: "Ref",
-			Value: os.Getenv("GITHUB_REF"),
-			Short: true,
-		},                {
-			Title: "Event",
-			Value: os.Getenv("GITHUB_EVENT_NAME"),
-			Short: true,
-		},
-		{
-			Title: "Repo Action URL",
-			Value: "https://github.com/" + os.Getenv("GITHUB_REPOSITORY") + "/actions",
+			Title: os.Getenv(EnvSlackTitle),
+			Value: envOr(EnvSlackMessage, "EOM"),
 			Short: false,
 		},
 		{
-			Title: os.Getenv(EnvSlackTitle),
-			Value: envOr(EnvSlackMessage, "EOM"),
+			Title: "Ref",
+			Value: os.Getenv("GITHUB_REF"),
+			Short: false,
+		},
+		{
+			Title: "Repository",
+			Value: "https://github.com/" + os.Getenv("GITHUB_REPOSITORY"),
 			Short: false,
 		},
 	}
@@ -109,10 +105,6 @@ func main() {
 			{
 				Fallback: envOr(EnvSlackMessage, "GITHUB_ACTION=" + os.Getenv("GITHUB_ACTION") + " \n GITHUB_ACTOR=" + os.Getenv("GITHUB_ACTOR") + " \n GITHUB_EVENT_NAME=" + os.Getenv("GITHUB_EVENT_NAME") + " \n GITHUB_REF=" + os.Getenv("GITHUB_REF") + " \n GITHUB_REPOSITORY=" + os.Getenv("GITHUB_REPOSITORY") + " \n GITHUB_WORKFLOW=" + os.Getenv("GITHUB_WORKFLOW")),
 				Color:      envOr(EnvSlackColor, "good"),
-				AuthorName: envOr(EnvGithubActor, ""),
-				AuthorLink: "http://github.com/" + os.Getenv(EnvGithubActor),
-				AuthorIcon: "http://github.com/" + os.Getenv(EnvGithubActor) + ".png?size=32",
-				Footer: "<https://github.com/rtCamp/github-actions-library|Powered By rtCamp's GitHub Actions Library>",
 				Fields: fields,
 			},
 		},
